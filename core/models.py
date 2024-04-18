@@ -1,10 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from .utils import _generate_slug
+
 from django.template.defaultfilters import slugify
-from django.utils.crypto import get_random_string
-from random import randint
-
-
 class Tag(models.Model):
     name = models.CharField(max_length=20)
     slug = models.SlugField(null=True, blank=True, unique=True)
@@ -51,16 +49,12 @@ class Paste(models.Model):
 
     def __str__(self):
         return f"{self.content}"
+    
+   
 
     def save(self, *args, **kwargs):
 
-        if not self.slug:
-            string_to_slugify = f'{get_random_string(8)} {randint(1, 30)}'
-            self.slug = slugify(string_to_slugify)[:8]
-            
-            i = 0
-            while Paste.objects.filter(slug=self.slug).exists():
-                self.slug = string_to_slugify[:8+i]
+        _generate_slug(self, Paste)
 
         super().save(*args, **kwargs)
 
