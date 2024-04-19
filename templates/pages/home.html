@@ -2,8 +2,89 @@
 
 {% block content %}
     <div class="wrapper">
-        <div class="container">
-            
+        <div class="content">
+            <div class="content__title">
+                New Paste
+            </div>
+            <div class="form-wrapper">
+                <form action="post" class="paste-form">
+                    <textarea name="paste" id="paste" class="paste-form__textarea"></textarea>
+                     
+                    <div class="paste-form__field">
+                        <label for="tagsinput">Tags:</label>
+                        <input type="text" name="tags" id="tagsinput">
+                    </div>
+
+                    <div class="paste-form__field">
+                        <label for="pasteExpiry"> Paste Expiration: </label>
+                          <select name="pasteexpiry" id="pasteExpiry">
+                            <option value="never">Never</option>
+                            <option value="burnafterread">Burn after read</option>
+                            <option value="tenmins">10 Minutes</option>
+                            <option value="onehour">1 Hour</option>
+                            <option value="oneday">1 Day</option>
+                            <option value="oneweek"> 1 Week </option>
+                            <option value="twoweeks">2 Weeks</option>
+                          </select>
+                    </div>
+                    <div class="paste-form__field">
+                        <label for="pasteExposure">Paste Exposure: </label>
+                        <select name="pasteexposure" id="pasteExposure">
+                            <option value="public">Public</option>
+                            <option value="unlisted">Unlisted</option>
+                            <option value="private">Private</option>
+                            
+                        </select>
+                    </div>
+
+                    <div class="paste-form__field">
+                        <label >Password:</label>
+                        
+                        <div class="paste-form__input-group">
+                            <input type="checkbox" id="passwordcheck" name="password" />
+                            <label for="passwordcheck">Disabled</label>
+                            <input type="text" name="passwordinput" id="">
+                        
+                        </div>
+
+                        
+                        
+                        
+                    </div>
+
+                    <div class="paste-form__field">
+                        <div class="paste-form__input-group">
+                            <input type="checkbox" id="burnafterread" name="burnafterread" />
+                            <label for="burnafterread">Burn after read </label>
+                        
+                        </div>
+                    </div>
+
+                    <div class="paste-form__field">
+                      <label for="pastetitle">Paste Title: </label>
+                      <input type="text" name="pastetitle" id="pastetitle">
+                    </div>
+                        
+                    <input type="submit" value="Create New Paste">
+                </form>
+            </div>
+        </div>
+
+        <div class="public-paste">
+            <h3>Public Pastes</h3>
+            <div class="public-paste__item">
+                <div class="public-paste__title">
+                    <a href="#">Untitled</a>
+                </div>
+                <div class="public-paste__meta">
+                    5 Min ago
+                </div>
+
+            </div>
+        </div>
+
+        <div class="login-prompt">
+            Youre currenty not logged in. <a href="#">Login</a> or <a href="#">Signup</a> to access more features
         </div>
     </div>
 {% endblock content %}
