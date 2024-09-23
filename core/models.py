@@ -1,8 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
+from django.urls import reverse
 from .utils import _generate_slug
 
 from django.template.defaultfilters import slugify
+
+
 class Tag(models.Model):
     name = models.CharField(max_length=20)
     slug = models.SlugField(null=True, blank=True, unique=True)
@@ -38,8 +42,7 @@ class Paste(models.Model):
         max_length=10, choices=EXPIRY_OPTIONS, default=UNLISTED
     )
     expiry_date = models.DateTimeField(blank=True, null=True)
-    title = models.CharField(max_length=250, blank=True,
-                             null=True, default="Untitled")
+    title = models.CharField(max_length=250, default="Untitled")
     burn_after_reading = models.BooleanField(default=False)
     password = models.BooleanField(default=False)
     password_text = models.CharField(blank=True, null=True, max_length=250)
@@ -48,15 +51,22 @@ class Paste(models.Model):
     date_modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.content}"
+        return f"{self.title} by {self.author} {self.content[:50]}"
     
-   
+    def is_expired(self):
+        if not self.expiry_date:
+            return "Never"
+        return self.expiry_date >= timezone.datetime.now()
+    
+    
+    def get_absolute_url(self):
+        return reverse("paste-detail", kwargs={"slug": self.slug})
+    
 
     def save(self, *args, **kwargs):
-
         _generate_slug(self, Paste)
-
         super().save(*args, **kwargs)
 
     class Meta:
         verbose_name_plural = "Pastes"
+        
