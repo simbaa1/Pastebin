@@ -1,85 +1,78 @@
 {% extends "base.html" %}
-
+{% load datetime_filter %}
 {% block content %}
     <div class="wrapper">
         <div class="content">
             <div class="content__title">
                 New Paste
             </div>
+
             <div class="form-wrapper">
-                <form action="post" class="paste-form">
-                    <textarea name="paste" id="paste" class="paste-form__textarea"></textarea>
+                <form method="post" action = "" class="paste-form">
+                   {% csrf_token %}
+                    {{form.content }}
                      
-                    <div class="paste-form__field">
+                    <div class="paste-form__field"  >
+                        <div class="tags-container">
+                        </div>
                         <label for="tagsinput">Tags:</label>
-                        <input type="text" name="tags" id="tagsinput">
+                        {{ form.tag_list }}
                     </div>
 
                     <div class="paste-form__field">
                         <label for="pasteExpiry"> Paste Expiration: </label>
-                          <select name="pasteexpiry" id="pasteExpiry">
-                            <option value="never">Never</option>
-                            <option value="burnafterread">Burn after read</option>
-                            <option value="tenmins">10 Minutes</option>
-                            <option value="onehour">1 Hour</option>
-                            <option value="oneday">1 Day</option>
-                            <option value="oneweek"> 1 Week </option>
-                            <option value="twoweeks">2 Weeks</option>
-                          </select>
+                          
+                        {{ form.paste_expiry}}
                     </div>
                     <div class="paste-form__field">
                         <label for="pasteExposure">Paste Exposure: </label>
-                        <select name="pasteexposure" id="pasteExposure">
-                            <option value="public">Public</option>
-                            <option value="unlisted">Unlisted</option>
-                            <option value="private">Private</option>
-                            
-                        </select>
+                    {{ form.paste_exposure }}
                     </div>
 
                     <div class="paste-form__field">
                         <label >Password:</label>
                         
-                        <div class="paste-form__input-group">
-                            <input type="checkbox" id="passwordcheck" name="password" />
-                            <label for="passwordcheck">Disabled</label>
-                            <input type="text" name="passwordinput" id="">
-                        
-                        </div>
+                        <div class="paste-form__input-group flex-row">
 
+                            <label>
+                                {{ form.password }}
+                                Disabled</label>
+                                {{ form.password_text }}
                         
-                        
-                        
+                            </div>
                     </div>
 
-                    <div class="paste-form__field">
+                    <div class="paste-form__field align-right">
+                        
                         <div class="paste-form__input-group">
-                            <input type="checkbox" id="burnafterread" name="burnafterread" />
+                            {{ form.burn_after_reading }}
                             <label for="burnafterread">Burn after read </label>
                         
                         </div>
                     </div>
 
                     <div class="paste-form__field">
-                      <label for="pastetitle">Paste Title: </label>
-                      <input type="text" name="pastetitle" id="pastetitle">
+                      <label for="title">Paste Title: </label>
+                      {{ form.title }}
                     </div>
                         
-                    <input type="submit" value="Create New Paste">
+                    <input type="submit" class="btn-submit" value="Create New Paste">
                 </form>
             </div>
         </div>
 
         <div class="public-paste">
-            <h3>Public Pastes</h3>
-            <div class="public-paste__item">
-                <div class="public-paste__title">
-                    <a href="#">Untitled</a>
-                </div>
-                <div class="public-paste__meta">
-                    5 Min ago
-                </div>
-
+            <h3>
+                <a href="{% url 'pastes' %}">Public Pastes</a></h3>
+                {% for paste in pastes %}
+                <div class="public-paste__item">
+                    <div class="public-paste__title">
+                        <a href="#">{{ paste.title }}</a>
+                    </div>
+                    <div class="public-paste__meta">
+                        {{paste.date_created|timesince}}
+                    </div>
+                {% endfor %}
             </div>
         </div>
 

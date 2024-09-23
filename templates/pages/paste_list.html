@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load datetime_filter %}
+
+{% block content %}
+<div class="public-paste">
+    <h3>Public Pastes</h3>
+        {% for paste in pastes %}
+        <div class="public-paste__item">
+            <div class="public-paste__title">
+                <a href="{% url 'paste-detail' paste.slug %}">{{ paste.title }}</a>
+            </div>
+            <div class="public-paste__meta">
+                {{ paste.date_created|timesince|upto}}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock  %}

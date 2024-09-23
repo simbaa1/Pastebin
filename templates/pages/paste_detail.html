@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    <div class="paste-detail">
+
+        <div class="paste-detail__title">
+            
+           <h2>
+            {{ paste.title }}
+           </h2>
+        </div>
+
+        <div class="paste-detail__author">
+
+            {% if paste.author %}
+            {{ paste.author.username }}
+            {% else %}
+              Anon
+            {% endif %}
+        </div>
+        <div class="paste-detail__meta">
+            <span class="paste-detail__created"> {{ paste.date_created }}</span>
+            <span class="paste-detail__expiry"> 
+                {% if paste.expiry_date %}
+                {{ paste.expiry_date }}
+                {% else %}
+                  NEVER
+                {% endif %}
+                
+                </span>
+        </div>
+
+        <div class="paste-detail__content">
+            {{ paste.content}}
+        </div>
+
+        <div class="paste-detail__tags">
+          {% for tag in  tags %}
+          <span class="tag-pill">
+              {{ tag.name }}
+           </span> 
+          {% endfor %}
+        
+       
+        </div>
+
+        
+    </div>
+{% endblock content %}
