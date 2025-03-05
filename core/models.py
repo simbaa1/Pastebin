@@ -53,10 +53,10 @@ class Paste(models.Model):
     def __str__(self):
         return f"{self.title} by {self.author} {self.content[:50]}"
     
-    def is_expired(self):
-        if not self.expiry_date:
-            return "Never"
-        return self.expiry_date >= timezone.datetime.now()
+    @property
+    def expired(self):
+        if self.expiry_date:
+            return timezone.now() > self.expiry_date
     
     
     def get_absolute_url(self):

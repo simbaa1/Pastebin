@@ -9,6 +9,14 @@
             <div class="public-paste__title">
                 <a href="{% url 'paste-detail' paste.slug %}">{{ paste.title }}</a>
             </div>
+          <div class="public-paste__author">
+            {% if paste.author %}
+            <a href="#">{{ paste.author.username }} </a>
+            {% else %}
+              Anonymous User
+            {% endif %}
+            
+          </div>
             <div class="public-paste__meta">
                 {{ paste.date_created|timesince|upto}}
             </div>

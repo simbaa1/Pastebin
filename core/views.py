@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.hashers import make_password, check_password
 from .forms import PasteForm, PASTE_EXPIRY
 from .models import Paste, Tag
 
@@ -40,7 +41,12 @@ def home(request):
            
             paste_expiry = form.cleaned_data['paste_expiry']
             paste.expiry_date = set_expirydate(paste_expiry)
-
+            password_enabled = form.cleaned_data['password']
+            if password_enabled:
+                paste_password = form.cleaned_data['password_text']
+                encrypted_password = make_password(paste_password)
+                paste.password = encrypted_password
+                 
             paste.save()  
 
             tag_names = form.cleaned_data['tag_list'].split(',')
@@ -48,7 +54,7 @@ def home(request):
                 tag_name = tag_name.strip()
                 tag, created = Tag.objects.get_or_create(name=tag_name)
                 paste.tags.add(tag) 
-            return HttpResponseRedirect(reverse('home'))  
+            return HttpResponseRedirect(reverse('pastes'))  
                  
         else:
             print(form.errors)
@@ -63,6 +69,7 @@ def home(request):
 
 
 def show_pastes(request):
+    # exclude private posts and expired ones
     pastes = Paste.objects.exclude(paste_exposure='PR').order_by('-date_created')[:20]
     context = {
         'pastes' : pastes
@@ -73,5 +80,14 @@ def show_pastes(request):
 
 def paste_detail(request, slug):
     paste = get_object_or_404(Paste, slug=slug)
+    if paste.expired:
+        raise ValueError("The paste is expired")
+    
+    if paste.password:
+        pass
+        
+    if paste.paste_exposure == "PR":
+        if paste.author != request.user:
+            raise ValueError("The paste is private")
     tags = paste.tags.all()
     return render(request, 'pages/paste_detail.html', {"paste": paste, "tags": tags})

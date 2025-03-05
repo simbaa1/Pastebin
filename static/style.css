@@ -1,3 +1,8 @@
+:root {
+
+  --left-margin: 2rem;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -42,7 +47,7 @@
   }
   
   .nav-item:first-child {
-    margin-left: 2rem;
+    margin-left: var(--left-margin);
   }
   .nav-item__logo {
     padding: 0.2rem 1.2rem;
@@ -109,10 +114,11 @@
   .nav-item__button a:hover {
       background: hsla(0, 0%, 89%, 0.55);
   }
-zz
+
 
 .wrapper {
     display: grid;
+    /* padding-left: var(--left-margin); */
     grid-template-columns: 2fr 1fr;
     grid-template-rows: 2fr 1fr;
     margin-left: 2rem;
@@ -214,3 +220,7 @@ zz
   gap: 12px;
 }
 
+
+/* #tagsInput {
+  display: none;
+} */

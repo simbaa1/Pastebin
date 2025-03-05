@@ -67,12 +67,20 @@
           </form>
         </div>
         <div class="nav-item flex-end">
+          {% if request.user.is_authenticated %}
+               <div class="nav-item__pic">
+                   <a href="#">
+                       {{ request.user.username }}
+                   </a>
+               </div>
+          {% else %}
           <div class="nav-item__button ">
             <a href="#">Login</a>
           </div>
           <div class="nav-item__button nav-item__button--inverted">
             <a href="#">Signup</a>
           </div>
+          {% endif %}
         </div>
       </nav>
     </div>

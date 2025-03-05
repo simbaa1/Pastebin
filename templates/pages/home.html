@@ -15,9 +15,14 @@
                     <div class="paste-form__field"  >
                         <div class="tags-container">
                         </div>
-                        <label for="tagsinput">Tags:</label>
+                        <label for="tagsInput">Tags:</label>
                         {{ form.tag_list }}
+                        {% comment %} <input type="text" class="tags-input">
+                        <div class="tags-container"> {% endcomment %}
+
+                        </div>
                     </div>
+
 
                     <div class="paste-form__field">
                         <label for="pasteExpiry"> Paste Expiration: </label>
@@ -61,23 +66,11 @@
             </div>
         </div>
 
-        <div class="public-paste">
-            <h3>
-                <a href="{% url 'pastes' %}">Public Pastes</a></h3>
-                {% for paste in pastes %}
-                <div class="public-paste__item">
-                    <div class="public-paste__title">
-                        <a href="#">{{ paste.title }}</a>
-                    </div>
-                    <div class="public-paste__meta">
-                        {{paste.date_created|timesince}}
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-
+        
+        {% if not user.is_authenticated %}
         <div class="login-prompt">
             Youre currenty not logged in. <a href="#">Login</a> or <a href="#">Signup</a> to access more features
         </div>
+        {% endif %}
     </div>
 {% endblock content %}
